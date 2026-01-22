@@ -95,226 +95,250 @@
                 </tbody>
             </table>
         </div>
+        <div class="sources-section">
+            <h3><i data-lucide="library"></i> Data Sources & References</h3>
+            <div class="sources-list">
+                <div class="source-item">
+                    <span class="title">DTI Region VI (Western Visayas)</span>
+                    <a href="https://www.dti.gov.ph/regions/region-6/" target="_blank"
+                        class="link">https://www.dti.gov.ph/regions/region-6/</a>
+                    <p class="description">Source for priority industry cluster profiles, regional targets, and investment
+                        guides.</p>
+                </div>
+                <div class="source-item">
+                    <span class="title">Department of Agriculture (DA) - Region VI</span>
+                    <a href="https://westernvisayas.da.gov.ph" target="_blank" class="link">https://westernvisayas.da.gov.ph</a>
+                    <p class="description">Production data for coffee, cacao, coconut, and other high-value agricultural
+                        commodities.</p>
+                </div>
+                <div class="source-item">
+                    <span class="title">Board of Investments (BOI)</span>
+                    <a href="https://boi.gov.ph" target="_blank" class="link">https://boi.gov.ph</a>
+                    <p class="description">Guidelines for investment priorities plan and incentives for strategic regional
+                        projects.</p>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
-@section('scripts')
-    <script>
-        const clusterData = {
-            bamboo: {
-                title: "Bamboo Industry",
-                kpis: [
-                    { label: "Bamboo Area (2022)", value: "8,450 ha", trend: "Growth Area", icon: "trending-up", status: "up" },
-                    { label: "MSMEs Assisted", value: "156", trend: "Active Support", icon: "award", status: "up" },
-                    { label: "Key Product", value: "Engineered", trend: "Export Ready", icon: "package", status: "" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [6400, 7500, 8450, 9100, 9800],
-                    label: "Hectares Planted"
-                },
-                details: [
-                    ["Key Commodities", "Engineered Bamboo, Bamboo Shoots, Furniture"],
-                    ["Investment Focus", "Processing Plants, Plantation Development"],
-                    ["Target Market", "Local Construction, Export (Europe/US)"],
-                    ["Regional Status", "Strategic priority for sustainable development"]
-                ]
-            },
-            coffee: {
-                title: "Coffee Industry",
-                kpis: [
-                    { label: "Production (2024)", value: "1,200 MT", trend: "8% Growth", icon: "trending-up", status: "up" },
-                    { label: "Coffee Farmers", value: "1,850", trend: "Technical Support", icon: "users", status: "" },
-                    { label: "Variety", value: "Robusta", trend: "Main Crop", icon: "coffee", status: "" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [950, 1020, 1080, 1150, 1200],
-                    label: "Production (Metric Tons)"
-                },
-                details: [
-                    ["Key Commodities", "Robusta, Liberica Beans"],
-                    ["Investment Focus", "Quality Post-harvest facilities, Roasting"],
-                    ["Target Market", "Local Specialty Cafes, Institutional Buyers"],
-                    ["Status", "High priority for mountainous areas (Panay/Negros)"]
-                ]
-            },
-            cacao: {
-                title: "Cacao Industry",
-                kpis: [
-                    { label: "Production (2024)", value: "580 MT", trend: "15% Growth", icon: "trending-up", status: "up" },
-                    { label: "Processors", value: "32", trend: "Award-winning", icon: "award", status: "" },
-                    { label: "Area", value: "1,450 ha", trend: "New Plantations", icon: "map", status: "up" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [320, 380, 450, 520, 580],
-                    label: "Production (Metric Tons)"
-                },
-                details: [
-                    ["Key Commodities", "Fermented Beans, Tablea, Dark Chocolate"],
-                    ["Investment Focus", "Commercial-scale fermentation, Processing"],
-                    ["Target Market", "Artisanal Chocolatiers, Export Markets"],
-                    ["DTI Support", "Market linking with high-end confectioners"]
-                ]
-            },
-            fruits_nuts: {
-                title: "Processed Fruits & Nuts",
-                kpis: [
-                    { label: "Cluster MSMEs", value: "482", trend: "Strong Network", icon: "building-2", status: "" },
-                    { label: "Export Value", value: "$4.2M", trend: "UP 8% YoY", icon: "trending-up", status: "up" },
-                    { label: "Main Crop", value: "Mango", trend: "Guimaras Pride", icon: "sun", status: "" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [3.1, 3.4, 3.8, 4.0, 4.2],
-                    label: "Export Value ($ Million)"
-                },
-                details: [
-                    ["Key Commodities", "Dried Mango, Cashew, Pineapple"],
-                    ["Investment Focus", "Value-added processing, cold chain logistics"],
-                    ["Target Market", "Asia-Pacific, USA, Local Retail"],
-                    ["Key Hub", "Guimaras (Mango), Antique (Cashew)"]
-                ]
-            },
-            coconut: {
-                title: "Coconut Industry",
-                kpis: [
-                    { label: "Q3 2024 Production", value: "136k MT", trend: "Top Crop", icon: "award", status: "up" },
-                    { label: "Halal Ready", value: "45", trend: "Establishments", icon: "check-circle", status: "" },
-                    { label: "Value Addition", value: "Medium", trend: "Strategic Focus", icon: "info", status: "" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [128, 131, 133, 135, 136.5],
-                    label: "Production (Thousand Metric Tons)"
-                },
-                details: [
-                    ["Key Commodities", "Copra, Virgin Coconut Oil, Coconut Sugar"],
-                    ["Investment Focus", "High-value processing, Halal certification"],
-                    ["Target Market", "Global Wellness Market, Halal Export"],
-                    ["Status", "Foremost crop in WV in 2024"]
-                ]
-            },
-            wearables: {
-                title: "Wearables & Homestyle",
-                kpis: [
-                    { label: "Artisans Supported", value: "1,200+", trend: "Active Base", icon: "users", status: "" },
-                    { label: "Creative Hubs", value: "12", trend: "Regional Hubs", icon: "map-pin", status: "" },
-                    { label: "Fiber Types", value: "4", trend: "High Value", icon: "leaf", status: "up" }
-                ],
-                chart: {
-                    labels: ['2021', '2022', '2023', '2024', '2025(P)'],
-                    data: [45, 52, 68, 75, 85],
-                    label: "Assisted Creative MSMEs"
-                },
-                details: [
-                    ["Key Commodities", "Piña Cloth, Hablon, Bamboo Wearables"],
-                    ["Investment Focus", "Design innovation, digital marketing"],
-                    ["Target Market", "High-end Fashion, Eco-conscious consumers"],
-                    ["Key Event", "Panubli-on Trade Fair"]
-                ]
-            },
-            it_bpm: {
-                title: "IT-BPM Sector",
-                kpis: [
-                    { label: "Estimated Jobs", value: "45k+", trend: "Rapid Expansion", icon: "user-plus", status: "up" },
-                    { label: "Tech Parks", value: "7", trend: "PEZA Centers", icon: "shield-check", status: "" },
-                    { label: "Focus", value: "Next Gen", trend: "AI/Analytics", icon: "cpu", status: "up" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [28, 32, 38, 42, 45],
-                    label: "Direct Employment (Thousands)"
-                },
-                details: [
-                    ["Key Services", "Customer Support, Software Dev, Game Dev"],
-                    ["Investment Focus", "AI optimization, creative tech"],
-                    ["Target Market", "North America, Australia, Global Tech"],
-                    ["Local Hubs", "Iloilo City (Atria Gardens, The Grid)"]
-                ]
-            }
-        };
-
-        let mainChart;
-
-        function updateCluster(key) {
-            const data = clusterData[key];
-            if (!data) return;
-
-            // Update Buttons and Dropdown
-            document.querySelectorAll('.cluster-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-cluster') === key);
-            });
-            document.getElementById('cluster-dropdown').value = key;
-
-            // Update KPIs
-            for (let i = 0; i < 3; i++) {
-                const kpi = data.kpis[i];
-                document.getElementById(`kpi-${i + 1}-label`).innerText = kpi.label;
-                document.getElementById(`kpi-${i + 1}-value`).innerHTML = kpi.value;
-                const trendEl = document.getElementById(`kpi-${i + 1}-trend`);
-                trendEl.className = `trend ${kpi.status || ''}`;
-                trendEl.innerHTML = `<i data-lucide="${kpi.icon}"></i> ${kpi.trend}`;
-            }
-
-            // Update Chart
-            document.getElementById('chart-title').innerText = `📊 ${data.title} Growth Trend`;
-            if (mainChart) mainChart.destroy();
-
-            const ctx = document.getElementById('clusterMainChart').getContext('2d');
-            mainChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.chart.labels,
-                    datasets: [{
-                        label: data.chart.label,
-                        data: data.chart.data,
-                        backgroundColor: 'rgba(56, 189, 248, 0.6)',
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            labels: { color: '#94a3b8', font: { family: 'Outfit' } }
-                        }
+    @section('scripts')
+        <script>
+            const clusterData = {
+                bamboo: {
+                    title: "Bamboo Industry",
+                    kpis: [
+                        { label: "Bamboo Area (2022)", value: "8,450 ha", trend: "Growth Area", icon: "trending-up", status: "up" },
+                        { label: "MSMEs Assisted", value: "156", trend: "Active Support", icon: "award", status: "up" },
+                        { label: "Key Product", value: "Engineered", trend: "Export Ready", icon: "package", status: "" }
+                    ],
+                    chart: {
+                        labels: ['2020', '2021', '2022', '2023', '2024'],
+                        data: [6400, 7500, 8450, 9100, 9800],
+                        label: "Hectares Planted"
                     },
-                    scales: {
-                        y: {
-                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                            ticks: { color: '#94a3b8' }
+                    details: [
+                        ["Key Commodities", "Engineered Bamboo, Bamboo Shoots, Furniture"],
+                        ["Investment Focus", "Processing Plants, Plantation Development"],
+                        ["Target Market", "Local Construction, Export (Europe/US)"],
+                        ["Regional Status", "Strategic priority for sustainable development"]
+                    ]
+                },
+                coffee: {
+                    title: "Coffee Industry",
+                    kpis: [
+                        { label: "Production (2024)", value: "1,200 MT", trend: "8% Growth", icon: "trending-up", status: "up" },
+                        { label: "Coffee Farmers", value: "1,850", trend: "Technical Support", icon: "users", status: "" },
+                        { label: "Variety", value: "Robusta", trend: "Main Crop", icon: "coffee", status: "" }
+                    ],
+                    chart: {
+                        labels: ['2020', '2021', '2022', '2023', '2024'],
+                        data: [950, 1020, 1080, 1150, 1200],
+                        label: "Production (Metric Tons)"
+                    },
+                    details: [
+                        ["Key Commodities", "Robusta, Liberica Beans"],
+                        ["Investment Focus", "Quality Post-harvest facilities, Roasting"],
+                        ["Target Market", "Local Specialty Cafes, Institutional Buyers"],
+                        ["Status", "High priority for mountainous areas (Panay/Negros)"]
+                    ]
+                },
+                cacao: {
+                    title: "Cacao Industry",
+                    kpis: [
+                        { label: "Production (2024)", value: "580 MT", trend: "15% Growth", icon: "trending-up", status: "up" },
+                        { label: "Processors", value: "32", trend: "Award-winning", icon: "award", status: "" },
+                        { label: "Area", value: "1,450 ha", trend: "New Plantations", icon: "map", status: "up" }
+                    ],
+                    chart: {
+                        labels: ['2020', '2021', '2022', '2023', '2024'],
+                        data: [320, 380, 450, 520, 580],
+                        label: "Production (Metric Tons)"
+                    },
+                    details: [
+                        ["Key Commodities", "Fermented Beans, Tablea, Dark Chocolate"],
+                        ["Investment Focus", "Commercial-scale fermentation, Processing"],
+                        ["Target Market", "Artisanal Chocolatiers, Export Markets"],
+                        ["DTI Support", "Market linking with high-end confectioners"]
+                    ]
+                },
+                fruits_nuts: {
+                    title: "Processed Fruits & Nuts",
+                    kpis: [
+                        { label: "Cluster MSMEs", value: "482", trend: "Strong Network", icon: "building-2", status: "" },
+                        { label: "Export Value", value: "$4.2M", trend: "UP 8% YoY", icon: "trending-up", status: "up" },
+                        { label: "Main Crop", value: "Mango", trend: "Guimaras Pride", icon: "sun", status: "" }
+                    ],
+                    chart: {
+                        labels: ['2020', '2021', '2022', '2023', '2024'],
+                        data: [3.1, 3.4, 3.8, 4.0, 4.2],
+                        label: "Export Value ($ Million)"
+                    },
+                    details: [
+                        ["Key Commodities", "Dried Mango, Cashew, Pineapple"],
+                        ["Investment Focus", "Value-added processing, cold chain logistics"],
+                        ["Target Market", "Asia-Pacific, USA, Local Retail"],
+                        ["Key Hub", "Guimaras (Mango), Antique (Cashew)"]
+                    ]
+                },
+                coconut: {
+                    title: "Coconut Industry",
+                    kpis: [
+                        { label: "Q3 2024 Production", value: "136k MT", trend: "Top Crop", icon: "award", status: "up" },
+                        { label: "Halal Ready", value: "45", trend: "Establishments", icon: "check-circle", status: "" },
+                        { label: "Value Addition", value: "Medium", trend: "Strategic Focus", icon: "info", status: "" }
+                    ],
+                    chart: {
+                        labels: ['2020', '2021', '2022', '2023', '2024'],
+                        data: [128, 131, 133, 135, 136.5],
+                        label: "Production (Thousand Metric Tons)"
+                    },
+                    details: [
+                        ["Key Commodities", "Copra, Virgin Coconut Oil, Coconut Sugar"],
+                        ["Investment Focus", "High-value processing, Halal certification"],
+                        ["Target Market", "Global Wellness Market, Halal Export"],
+                        ["Status", "Foremost crop in WV in 2024"]
+                    ]
+                },
+                wearables: {
+                    title: "Wearables & Homestyle",
+                    kpis: [
+                        { label: "Artisans Supported", value: "1,200+", trend: "Active Base", icon: "users", status: "" },
+                        { label: "Creative Hubs", value: "12", trend: "Regional Hubs", icon: "map-pin", status: "" },
+                        { label: "Fiber Types", value: "4", trend: "High Value", icon: "leaf", status: "up" }
+                    ],
+                    chart: {
+                        labels: ['2021', '2022', '2023', '2024', '2025(P)'],
+                        data: [45, 52, 68, 75, 85],
+                        label: "Assisted Creative MSMEs"
+                    },
+                    details: [
+                        ["Key Commodities", "Piña Cloth, Hablon, Bamboo Wearables"],
+                        ["Investment Focus", "Design innovation, digital marketing"],
+                        ["Target Market", "High-end Fashion, Eco-conscious consumers"],
+                        ["Key Event", "Panubli-on Trade Fair"]
+                    ]
+                },
+                it_bpm: {
+                    title: "IT-BPM Sector",
+                    kpis: [
+                        { label: "Estimated Jobs", value: "45k+", trend: "Rapid Expansion", icon: "user-plus", status: "up" },
+                        { label: "Tech Parks", value: "7", trend: "PEZA Centers", icon: "shield-check", status: "" },
+                        { label: "Focus", value: "Next Gen", trend: "AI/Analytics", icon: "cpu", status: "up" }
+                    ],
+                    chart: {
+                        labels: ['2020', '2021', '2022', '2023', '2024'],
+                        data: [28, 32, 38, 42, 45],
+                        label: "Direct Employment (Thousands)"
+                    },
+                    details: [
+                        ["Key Services", "Customer Support, Software Dev, Game Dev"],
+                        ["Investment Focus", "AI optimization, creative tech"],
+                        ["Target Market", "North America, Australia, Global Tech"],
+                        ["Local Hubs", "Iloilo City (Atria Gardens, The Grid)"]
+                    ]
+                }
+            };
+
+            let mainChart;
+
+            function updateCluster(key) {
+                const data = clusterData[key];
+                if (!data) return;
+
+                // Update Buttons and Dropdown
+                document.querySelectorAll('.cluster-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.getAttribute('data-cluster') === key);
+                });
+                document.getElementById('cluster-dropdown').value = key;
+
+                // Update KPIs
+                for (let i = 0; i < 3; i++) {
+                    const kpi = data.kpis[i];
+                    document.getElementById(`kpi-${i + 1}-label`).innerText = kpi.label;
+                    document.getElementById(`kpi-${i + 1}-value`).innerHTML = kpi.value;
+                    const trendEl = document.getElementById(`kpi-${i + 1}-trend`);
+                    trendEl.className = `trend ${kpi.status || ''}`;
+                    trendEl.innerHTML = `<i data-lucide="${kpi.icon}"></i> ${kpi.trend}`;
+                }
+
+                // Update Chart
+                document.getElementById('chart-title').innerText = `📊 ${data.title} Growth Trend`;
+                if (mainChart) mainChart.destroy();
+
+                const ctx = document.getElementById('clusterMainChart').getContext('2d');
+                mainChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.chart.labels,
+                        datasets: [{
+                            label: data.chart.label,
+                            data: data.chart.data,
+                            backgroundColor: 'rgba(56, 189, 248, 0.6)',
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                labels: { color: '#94a3b8', font: { family: 'Outfit' } }
+                            }
                         },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#94a3b8' }
+                        scales: {
+                            y: {
+                                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                                ticks: { color: '#94a3b8' }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#94a3b8' }
+                            }
                         }
                     }
-                }
+                });
+
+                // Update Table
+                const tableBody = document.getElementById('cluster-table-body');
+                tableBody.innerHTML = '';
+                data.details.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                                        <td style="color: var(--accent); font-weight: 600; width: 30%;">${row[0]}</td>
+                                        <td>${row[1]}</td>
+                                    `;
+                    tableBody.appendChild(tr);
+                });
+
+                // Refresh Icons
+                lucide.createIcons();
+            }
+
+            // Initialize with Bamboo
+            document.addEventListener('DOMContentLoaded', () => {
+                updateCluster('bamboo');
             });
-
-            // Update Table
-            const tableBody = document.getElementById('cluster-table-body');
-            tableBody.innerHTML = '';
-            data.details.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                                    <td style="color: var(--accent); font-weight: 600; width: 30%;">${row[0]}</td>
-                                    <td>${row[1]}</td>
-                                `;
-                tableBody.appendChild(tr);
-            });
-
-            // Refresh Icons
-            lucide.createIcons();
-        }
-
-        // Initialize with Bamboo
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCluster('bamboo');
-        });
-    </script>
-@endsection
+        </script>
+    @endsection

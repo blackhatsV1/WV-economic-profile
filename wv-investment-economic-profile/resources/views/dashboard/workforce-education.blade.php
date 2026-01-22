@@ -65,6 +65,30 @@
                 <canvas id="institutionMixChart"></canvas>
             </div>
         </div>
+        <div class="sources-section">
+            <h3><i data-lucide="library"></i> Data Sources & References</h3>
+            <div class="sources-list">
+                <div class="source-item">
+                    <span class="title">Commission on Higher Education (CHED) - RO VI</span>
+                    <a href="https://ched.gov.ph" target="_blank" class="link">https://ched.gov.ph</a>
+                    <p class="description">Primary source for Higher Education Institutional data and graduate statistics
+                        across disciplines.</p>
+                </div>
+                <div class="source-item">
+                    <span class="title">Philippine Statistics Authority (PSA) - LFS</span>
+                    <a href="https://psa.gov.ph" target="_blank" class="link">https://psa.gov.ph</a>
+                    <p class="description">Source for Labor Force Survey (LFS) data, employment rates, and regional
+                        workforce
+                        demographics.</p>
+                </div>
+                <div class="source-item">
+                    <span class="title">TESDA Region VI</span>
+                    <a href="https://www.tesda.gov.ph" target="_blank" class="link">https://www.tesda.gov.ph</a>
+                    <p class="description">Technical-Vocational Education and Training (TVET) statistics and certification
+                        data for the region.</p>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
