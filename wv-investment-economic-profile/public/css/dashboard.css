@@ -607,7 +607,7 @@ body {
 
     .main-content {
         margin-left: 0;
-        padding: 1.5rem;
+        padding: 1.25rem;
     }
 
     .mobile-toggle {
@@ -620,6 +620,11 @@ body {
 
     .visual-container.full-width {
         grid-column: span 1;
+    }
+
+    .kpi-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
     }
 }
 
@@ -648,7 +653,8 @@ body {
     }
 
     .kpi-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.75rem;
     }
 
     .kpi-card .value {
@@ -656,7 +662,7 @@ body {
     }
 
     .visual-container {
-        padding: 1.25rem;
+        padding: 1rem;
         min-height: auto;
     }
 
@@ -666,12 +672,16 @@ body {
 }
 
 @media (max-width: 480px) {
+    .main-content {
+        padding: 0.75rem;
+    }
+
     .map-wrapper {
         height: 250px;
     }
 
     .header-left h1 {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
     }
 
     .clusters-selector {
@@ -684,5 +694,13 @@ body {
 
     .sources-list {
         grid-template-columns: 1fr;
+    }
+
+    .kpi-card {
+        padding: 1rem;
+    }
+
+    .kpi-card .value {
+        font-size: 1.125rem;
     }
 }
