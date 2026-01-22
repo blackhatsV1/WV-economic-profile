@@ -32,8 +32,9 @@
                     <i data-lucide="menu"></i>
                 </button>
                 <div class="logo">
-                    <i data-lucide="bar-chart-3" class="logo-icon"></i>
-                    <span>Western Visayas Investment and Economic Profile</span>
+                    <img src="{{ asset('dti-logo.png') }}" alt="DTI Logo" class="logo-icon"
+                        style="height: 32px; width: auto; background: white; border-radius: 4px; padding: 2px;">
+                    <span style="font-size: 0.9rem;">Western Visayas Investment and Economic Profile</span>
                 </div>
             </div>
             <nav class="sidebar-nav">
