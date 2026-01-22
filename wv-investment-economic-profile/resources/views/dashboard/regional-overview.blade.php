@@ -250,11 +250,11 @@
                 });
 
                 marker.bindPopup(`
-                                                                    <div style="padding: 0.5rem;">
-                                                                        <h4 style="margin: 0 0 0.5rem 0; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 0.25rem;">${area.name}</h4>
-                                                                        <div style="font-size: 0.875rem;">${area.data}</div>
-                                                                    </div>
-                                                                `);
+                                                                        <div style="padding: 0.5rem;">
+                                                                            <h4 style="margin: 0 0 0.5rem 0; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 0.25rem;">${area.name}</h4>
+                                                                            <div style="font-size: 0.875rem;">${area.data}</div>
+                                                                        </div>
+                                                                    `);
             });
         </script>
     @endsection

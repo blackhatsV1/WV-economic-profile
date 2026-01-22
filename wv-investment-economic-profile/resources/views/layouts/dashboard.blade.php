@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'WV Economic Profile') | Investment Dashboard</title>
+    <title>DTI | @yield('title', 'WV Economic Profile')</title>
+    <link rel="icon" type="image/png" href="/dti-logo.png">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,8 +33,7 @@
                     <i data-lucide="menu"></i>
                 </button>
                 <div class="logo">
-                    <img src="{{ asset('dti-logo.png') }}" alt="DTI Logo" class="logo-icon"
-                        style="height: 32px; width: auto; background: white; border-radius: 4px; padding: 2px;">
+                    <i data-lucide="bar-chart-3" class="logo-icon"></i>
                     <span style="font-size: 0.9rem;">Western Visayas Investment and Economic Profile</span>
                 </div>
             </div>
@@ -71,7 +71,9 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="top-header">
-                <div class="header-left">
+                <div class="header-left" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="/dti-logo.png" alt="DTI Logo"
+                        style="height: 45px; width: auto; background: white; border-radius: 6px; padding: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
                     <h1>@yield('page-title')</h1>
                 </div>
                 <div class="header-right">
