@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DTI | @yield('title', 'WV Economic Profile')</title>
+    <title>DTI | @yield('title', 'Western Visayas Investment and Economic Profile')</title>
     <link rel="icon" type="image/png" href="/dti-logo.png">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <!-- Google Fonts -->
@@ -68,16 +68,15 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <header class="top-header">
-                <div class="header-left" style="display: flex; align-items: center; gap: 15px;">
-                    <img src="/dti-logo.png" alt="DTI Logo"
-                        style="height: 45px; width: auto; background: white; border-radius: 6px; padding: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                <div class="header-left">
                     <h1>@yield('page-title')</h1>
                 </div>
-                <div class="header-right">
+                <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
                     <span class="date">{{ now()->format('F d, Y') }}</span>
+                    <img src="/dti-logo.png" alt="DTI Logo"
+                        style="height: 45px; width: auto; background: white; border-radius: 6px; padding: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
                 </div>
             </header>
 

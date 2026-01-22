@@ -75,7 +75,8 @@
             <div
                 style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
                 <i data-lucide="info" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i>
-                Strategic investment in digital infra has made WV a top choice for BPO expansion outside Metro Manila.
+                Strategic investment in digital infra has made Western Visayas a top choice for BPO expansion outside Metro
+                Manila.
             </div>
         </div>
         <div class="sources-section">
@@ -182,11 +183,11 @@
                 });
 
                 marker.bindPopup(`
-                                                                <div style="padding: 0.5rem;">
-                                                                    <h4 style="margin: 0 0 0.5rem 0; color: ${hub.color}; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem;">${hub.name}</h4>
-                                                                    <div style="font-size: 0.875rem;">${hub.data}</div>
-                                                                </div>
-                                                            `);
+                                                                    <div style="padding: 0.5rem;">
+                                                                        <h4 style="margin: 0 0 0.5rem 0; color: ${hub.color}; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem;">${hub.name}</h4>
+                                                                        <div style="font-size: 0.875rem;">${hub.data}</div>
+                                                                    </div>
+                                                                `);
             });
         </script>
     @endsection
