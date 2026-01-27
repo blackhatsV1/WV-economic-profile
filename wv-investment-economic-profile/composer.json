@@ -14,7 +14,7 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "voku/portable-ascii": "^2.0"
+        "voku/portable-ascii": "2.0.1 as 1.6.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
