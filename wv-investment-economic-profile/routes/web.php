@@ -35,6 +35,7 @@ Route::prefix('admin-portal-access')->group(function () {
 
         // Data Sources
         Route::post('/page/{page}/data-source', [App\Http\Controllers\AdminController::class, 'storeDataSource'])->name('admin.data-source.store');
+        Route::post('/data-source/{source}', [App\Http\Controllers\AdminController::class, 'updateDataSource'])->name('admin.data-source.update');
         Route::delete('/data-source/{source}', [App\Http\Controllers\AdminController::class, 'destroyDataSource'])->name('admin.data-source.destroy');
 
         // Map Markers

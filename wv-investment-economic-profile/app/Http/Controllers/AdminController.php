@@ -112,6 +112,18 @@ class AdminController extends Controller
         return back()->with('success', 'Data Source added successfully.');
     }
 
+    public function updateDataSource(Request $request, DataSource $source)
+    {
+        $data = $request->validate([
+            'title' => 'required|string',
+            'url' => 'nullable|url',
+            'description' => 'nullable|string',
+        ]);
+
+        $source->update($data);
+        return back()->with('success', 'Data Source updated successfully.');
+    }
+
     public function destroyDataSource(DataSource $source)
     {
         $source->delete();
