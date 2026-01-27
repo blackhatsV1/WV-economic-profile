@@ -80,5 +80,83 @@ class AdminController extends Controller
         return back()->with('success', 'KPI updated successfully.');
     }
 
-    // Add more methods for other CRUD operations as needed...
+    public function storeKpi(Request $request, Page $page)
+    {
+        $data = $request->validate([
+            'label' => 'required|string',
+            'value' => 'required|string',
+            'trend_value' => 'nullable|string',
+            'trend_direction' => 'nullable|string',
+            'icon' => 'nullable|string',
+        ]);
+
+        $page->kpis()->create($data);
+        return back()->with('success', 'KPI added successfully.');
+    }
+
+    public function destroyKpi(Kpi $kpi)
+    {
+        $kpi->delete();
+        return back()->with('success', 'KPI removed successfully.');
+    }
+
+    public function storeDataSource(Request $request, Page $page)
+    {
+        $data = $request->validate([
+            'title' => 'required|string',
+            'url' => 'nullable|url',
+            'description' => 'nullable|string',
+        ]);
+
+        $page->dataSources()->create($data);
+        return back()->with('success', 'Data Source added successfully.');
+    }
+
+    public function destroyDataSource(DataSource $source)
+    {
+        $source->delete();
+        return back()->with('success', 'Data Source removed successfully.');
+    }
+
+    public function storeMapMarker(Request $request, Page $page)
+    {
+        $data = $request->validate([
+            'name' => 'required|string',
+            'lat' => 'required|numeric',
+            'lng' => 'required|numeric',
+            'color' => 'nullable|string',
+            'type' => 'nullable|string',
+            'data' => 'nullable|string',
+        ]);
+
+        $page->mapMarkers()->create($data);
+        return back()->with('success', 'Map Marker added successfully.');
+    }
+
+    public function destroyMapMarker(MapMarker $marker)
+    {
+        $marker->delete();
+        return back()->with('success', 'Map Marker removed successfully.');
+    }
+
+    public function storeIndustryCluster(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|unique:industry_clusters,name',
+            'description' => 'nullable|string',
+            'icon' => 'nullable|string',
+            'color' => 'nullable|string',
+        ]);
+
+        $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
+
+        IndustryCluster::create($data);
+        return back()->with('success', 'Industry Cluster added successfully.');
+    }
+
+    public function destroyIndustryCluster(IndustryCluster $cluster)
+    {
+        $cluster->delete();
+        return back()->with('success', 'Industry Cluster removed successfully.');
+    }
 }

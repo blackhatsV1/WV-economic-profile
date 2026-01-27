@@ -27,8 +27,23 @@ Route::prefix('admin-portal-access')->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('/page/{page}', [App\Http\Controllers\AdminController::class, 'editPage'])->name('admin.page.edit');
+
+        // KPIs
+        Route::post('/page/{page}/kpi', [App\Http\Controllers\AdminController::class, 'storeKpi'])->name('admin.kpi.store');
         Route::post('/kpi/{kpi}', [App\Http\Controllers\AdminController::class, 'updateKpi'])->name('admin.kpi.update');
-        // Future CRUD routes will go here
+        Route::delete('/kpi/{kpi}', [App\Http\Controllers\AdminController::class, 'destroyKpi'])->name('admin.kpi.destroy');
+
+        // Data Sources
+        Route::post('/page/{page}/data-source', [App\Http\Controllers\AdminController::class, 'storeDataSource'])->name('admin.data-source.store');
+        Route::delete('/data-source/{source}', [App\Http\Controllers\AdminController::class, 'destroyDataSource'])->name('admin.data-source.destroy');
+
+        // Map Markers
+        Route::post('/page/{page}/map-marker', [App\Http\Controllers\AdminController::class, 'storeMapMarker'])->name('admin.map-marker.store');
+        Route::delete('/map-marker/{marker}', [App\Http\Controllers\AdminController::class, 'destroyMapMarker'])->name('admin.map-marker.destroy');
+
+        // Industry Clusters
+        Route::post('/industry-cluster', [App\Http\Controllers\AdminController::class, 'storeIndustryCluster'])->name('admin.industry-cluster.store');
+        Route::delete('/industry-cluster/{cluster}', [App\Http\Controllers\AdminController::class, 'destroyIndustryCluster'])->name('admin.industry-cluster.destroy');
     });
 });
 Route::prefix('dashboard')->group(function () {
