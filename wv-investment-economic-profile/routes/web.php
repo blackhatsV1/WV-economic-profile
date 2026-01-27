@@ -18,6 +18,19 @@ Route::get('/', function () {
 });
 
 
+// Hidden Admin Portal
+Route::prefix('admin-portal-access')->group(function () {
+    Route::get('/login', [App\Http\Controllers\AdminController::class, 'showLogin'])->name('admin.login');
+    Route::post('/login', [App\Http\Controllers\AdminController::class, 'login'])->name('admin.login.post');
+    Route::post('/logout', [App\Http\Controllers\AdminController::class, 'logout'])->name('admin.logout');
+
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/page/{page}', [App\Http\Controllers\AdminController::class, 'editPage'])->name('admin.page.edit');
+        Route::post('/kpi/{kpi}', [App\Http\Controllers\AdminController::class, 'updateKpi'])->name('admin.kpi.update');
+        // Future CRUD routes will go here
+    });
+});
 Route::prefix('dashboard')->group(function () {
     Route::get('/regional-overview', [App\Http\Controllers\DashboardController::class, 'regionalOverview'])->name('dashboard.regional-overview');
     Route::get('/industry-contribution', [App\Http\Controllers\DashboardController::class, 'industryContribution'])->name('dashboard.industry-contribution');

@@ -5,21 +5,16 @@
 
 @section('content')
     <div class="kpi-grid">
-        <div class="kpi-card">
-            <span class="label">Total HEIs</span>
-            <span class="value">102</span>
-            <div class="trend"><i data-lucide="info"></i> Higher Education Institutions</div>
-        </div>
-        <div class="kpi-card">
-            <span class="label">Total Graduates (AY 24-25)</span>
-            <span class="value">20,391</span>
-            <div class="trend up"><i data-lucide="graduation-cap"></i> Strong Talent Pool</div>
-        </div>
-        <div class="kpi-card">
-            <span class="label">Public vs Private HEIs</span>
-            <span class="value">46 SUCs | 49 Private</span>
-            <div class="trend"><i data-lucide="landmark"></i> Balanced Ecosystem</div>
-        </div>
+        @foreach($page->kpis as $kpi)
+            <div class="kpi-card">
+                <span class="label">{{ $kpi->label }}</span>
+                <span class="value">{!! $kpi->value !!}</span>
+                @if($kpi->trend_value)
+                    <div class="trend {{ $kpi->trend_direction }}"><i data-lucide="{{ $kpi->icon ?? 'trending-up' }}"></i>
+                        {{ $kpi->trend_value }}</div>
+                @endif
+            </div>
+        @endforeach
     </div>
 
     <div class="visuals-grid">
@@ -68,25 +63,15 @@
         <div class="sources-section">
             <h3><i data-lucide="library"></i> Data Sources & References</h3>
             <div class="sources-list">
-                <div class="source-item">
-                    <span class="title">Commission on Higher Education (CHED) - RO VI</span>
-                    <a href="https://ched.gov.ph" target="_blank" class="link">https://ched.gov.ph</a>
-                    <p class="description">Primary source for Higher Education Institutional data and graduate statistics
-                        across disciplines.</p>
-                </div>
-                <div class="source-item">
-                    <span class="title">Philippine Statistics Authority (PSA) - LFS</span>
-                    <a href="https://psa.gov.ph" target="_blank" class="link">https://psa.gov.ph</a>
-                    <p class="description">Source for Labor Force Survey (LFS) data, employment rates, and regional
-                        workforce
-                        demographics.</p>
-                </div>
-                <div class="source-item">
-                    <span class="title">TESDA Region VI</span>
-                    <a href="https://www.tesda.gov.ph" target="_blank" class="link">https://www.tesda.gov.ph</a>
-                    <p class="description">Technical-Vocational Education and Training (TVET) statistics and certification
-                        data for the region.</p>
-                </div>
+                @foreach($page->dataSources as $source)
+                    <div class="source-item">
+                        <span class="title">{{ $source->title }}</span>
+                        @if($source->url)
+                            <a href="{{ $source->url }}" target="_blank" class="link">{{ $source->url }}</a>
+                        @endif
+                        <p class="description">{{ $source->description }}</p>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -94,63 +79,55 @@
 
 @section('scripts')
     <script>
-        // Graduates by Discipline (Bar)
-        const ctxGrads = document.getElementById('graduatesChart').getContext('2d');
-        new Chart(ctxGrads, {
-            type: 'bar',
-            data: {
-                labels: ['IT & Computing', 'Engineering/Tech', 'Business Admin', 'Medical/Allied', 'Education', 'Others'],
-                datasets: [{
-                    label: 'Graduates',
-                    data: [4200, 3850, 5100, 4800, 2441, 0],
-                    backgroundColor: 'rgba(56, 189, 248, 0.6)',
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                        labels: { color: '#64748b' }
-                    }
+        // Graduates Chart
+        @php $gradChart = $page->charts->where('identifier', 'graduatesChart')->first(); @endphp
+        @if($gradChart)
+            const ctxGrads = document.getElementById('graduatesChart').getContext('2d');
+            new Chart(ctxGrads, {
+                type: '{{ $gradChart->type }}',
+                data: {
+                    labels: {!! json_encode($gradChart->labels) !!},
+                    datasets: {!! json_encode($gradChart->datasets) !!}
                 },
-                scales: {
-                    y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#94a3b8' } },
-                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                            labels: { color: '#64748b' }
+                        }
+                    },
+                    scales: {
+                        y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                    }
                 }
-            }
-        });
+            });
+        @endif
 
-        // Institutional Mix (Doughnut)
-        const ctxMix = document.getElementById('institutionMixChart').getContext('2d');
-        new Chart(ctxMix, {
-            type: 'doughnut',
-            data: {
-                labels: ['SUCs (Public)', 'Private HEIs', 'Others'],
-                datasets: [{
-                    data: [46, 49, 7],
-                    backgroundColor: [
-                        'rgba(56, 189, 248, 0.8)',
-                        'rgba(94, 163, 184, 0.6)',
-                        'rgba(255, 255, 255, 0.1)'
-                    ],
-                    borderColor: 'var(--bg-dark)',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { color: '#94a3b8', padding: 20 }
-                    }
+        // Institutional Mix Chart
+        @php $mixChart = $page->charts->where('identifier', 'institutionMixChart')->first(); @endphp
+        @if($mixChart)
+            const ctxMix = document.getElementById('institutionMixChart').getContext('2d');
+            new Chart(ctxMix, {
+                type: '{{ $mixChart->type }}',
+                data: {
+                    labels: {!! json_encode($mixChart->labels) !!},
+                    datasets: {!! json_encode($mixChart->datasets) !!}
                 },
-                cutout: '70%'
-            }
-        });
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { color: '#94a3b8', padding: 20 }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        @endif
     </script>
 @endsection

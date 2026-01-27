@@ -13,13 +13,9 @@
                 Cluster</label>
             <select id="cluster-dropdown" onchange="updateCluster(this.value)"
                 style="background: var(--bg-dark); color: var(--text-primary); border: 1px solid var(--border); padding: 0.5rem; border-radius: 0.4rem; min-width: 150px;">
-                <option value="bamboo">Bamboo</option>
-                <option value="coffee">Coffee</option>
-                <option value="cacao">Cacao</option>
-                <option value="fruits_nuts">Processed Fruits & Nuts</option>
-                <option value="coconut">Coconut</option>
-                <option value="wearables">Wearables & Homestyle</option>
-                <option value="it_bpm">IT-BPM</option>
+                @foreach($clusters as $cluster)
+                    <option value="{{ $cluster->slug }}">{{ $cluster->title }}</option>
+                @endforeach
             </select>
         </div>
         <div class="filter-group">
@@ -73,15 +69,10 @@
             </div>
             <div class="clusters-selector"
                 style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                <button class="cluster-btn active" data-cluster="bamboo" onclick="updateCluster('bamboo')">Bamboo</button>
-                <button class="cluster-btn" data-cluster="coffee" onclick="updateCluster('coffee')">Coffee</button>
-                <button class="cluster-btn" data-cluster="cacao" onclick="updateCluster('cacao')">Cacao</button>
-                <button class="cluster-btn" data-cluster="fruits_nuts" onclick="updateCluster('fruits_nuts')">Processed
-                    Fruits & Nuts</button>
-                <button class="cluster-btn" data-cluster="coconut" onclick="updateCluster('coconut')">Coconut</button>
-                <button class="cluster-btn" data-cluster="wearables" onclick="updateCluster('wearables')">Wearables &
-                    Homestyle</button>
-                <button class="cluster-btn" data-cluster="it_bpm" onclick="updateCluster('it_bpm')">IT-BPM</button>
+                @foreach($clusters as $cluster)
+                    <button class="cluster-btn {{ $loop->first ? 'active' : '' }}" data-cluster="{{ $cluster->slug }}"
+                        onclick="updateCluster('{{ $cluster->slug }}')">{{ $cluster->name }}</button>
+                @endforeach
             </div>
             <table class="premium-table" id="cluster-details-table">
                 <thead>
@@ -98,26 +89,15 @@
         <div class="sources-section">
             <h3><i data-lucide="library"></i> Data Sources & References</h3>
             <div class="sources-list">
-                <div class="source-item">
-                    <span class="title">DTI Region VI (Western Visayas)</span>
-                    <a href="https://www.dti.gov.ph/regions/region-6/" target="_blank"
-                        class="link">https://www.dti.gov.ph/regions/region-6/</a>
-                    <p class="description">Source for priority industry cluster profiles, regional targets, and investment
-                        guides.</p>
-                </div>
-                <div class="source-item">
-                    <span class="title">Department of Agriculture (DA) - Region VI</span>
-                    <a href="https://westernvisayas.da.gov.ph" target="_blank"
-                        class="link">https://westernvisayas.da.gov.ph</a>
-                    <p class="description">Production data for coffee, cacao, coconut, and other high-value agricultural
-                        commodities.</p>
-                </div>
-                <div class="source-item">
-                    <span class="title">Board of Investments (BOI)</span>
-                    <a href="https://boi.gov.ph" target="_blank" class="link">https://boi.gov.ph</a>
-                    <p class="description">Guidelines for investment priorities plan and incentives for strategic regional
-                        projects.</p>
-                </div>
+                @foreach($page->dataSources as $source)
+                    <div class="source-item">
+                        <span class="title">{{ $source->title }}</span>
+                        @if($source->url)
+                            <a href="{{ $source->url }}" target="_blank" class="link">{{ $source->url }}</a>
+                        @endif
+                        <p class="description">{{ $source->description }}</p>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -125,141 +105,14 @@
 
 @section('scripts')
     <script>
-        const clusterData = {
-            bamboo: {
-                title: "Bamboo Industry",
-                kpis: [
-                    { label: "Bamboo Area (2022)", value: "8,450 ha", trend: "Growth Area", icon: "trending-up", status: "up" },
-                    { label: "MSMEs Assisted", value: "156", trend: "Active Support", icon: "award", status: "up" },
-                    { label: "Key Product", value: "Engineered", trend: "Export Ready", icon: "package", status: "" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [6400, 7500, 8450, 9100, 9800],
-                    label: "Hectares Planted"
-                },
-                details: [
-                    ["Key Commodities", "Engineered Bamboo, Bamboo Shoots, Furniture"],
-                    ["Investment Focus", "Processing Plants, Plantation Development"],
-                    ["Target Market", "Local Construction, Export (Europe/US)"],
-                    ["Regional Status", "Strategic priority for sustainable development"]
-                ]
-            },
-            coffee: {
-                title: "Coffee Industry",
-                kpis: [
-                    { label: "Production (2024)", value: "1,200 MT", trend: "8% Growth", icon: "trending-up", status: "up" },
-                    { label: "Coffee Farmers", value: "1,850", trend: "Technical Support", icon: "users", status: "" },
-                    { label: "Variety", value: "Robusta", trend: "Main Crop", icon: "coffee", status: "" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [950, 1020, 1080, 1150, 1200],
-                    label: "Production (Metric Tons)"
-                },
-                details: [
-                    ["Key Commodities", "Robusta, Liberica Beans"],
-                    ["Investment Focus", "Quality Post-harvest facilities, Roasting"],
-                    ["Target Market", "Local Specialty Cafes, Institutional Buyers"],
-                    ["Status", "High priority for mountainous areas (Panay/Negros)"]
-                ]
-            },
-            cacao: {
-                title: "Cacao Industry",
-                kpis: [
-                    { label: "Production (2024)", value: "580 MT", trend: "15% Growth", icon: "trending-up", status: "up" },
-                    { label: "Processors", value: "32", trend: "Award-winning", icon: "award", status: "" },
-                    { label: "Area", value: "1,450 ha", trend: "New Plantations", icon: "map", status: "up" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [320, 380, 450, 520, 580],
-                    label: "Production (Metric Tons)"
-                },
-                details: [
-                    ["Key Commodities", "Fermented Beans, Tablea, Dark Chocolate"],
-                    ["Investment Focus", "Commercial-scale fermentation, Processing"],
-                    ["Target Market", "Artisanal Chocolatiers, Export Markets"],
-                    ["DTI Support", "Market linking with high-end confectioners"]
-                ]
-            },
-            fruits_nuts: {
-                title: "Processed Fruits & Nuts",
-                kpis: [
-                    { label: "Cluster MSMEs", value: "482", trend: "Strong Network", icon: "building-2", status: "" },
-                    { label: "Export Value", value: "$4.2M", trend: "UP 8% YoY", icon: "trending-up", status: "up" },
-                    { label: "Main Crop", value: "Mango", trend: "Guimaras Pride", icon: "sun", status: "" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [3.1, 3.4, 3.8, 4.0, 4.2],
-                    label: "Export Value ($ Million)"
-                },
-                details: [
-                    ["Key Commodities", "Dried Mango, Cashew, Pineapple"],
-                    ["Investment Focus", "Value-added processing, cold chain logistics"],
-                    ["Target Market", "Asia-Pacific, USA, Local Retail"],
-                    ["Key Hub", "Guimaras (Mango), Antique (Cashew)"]
-                ]
-            },
-            coconut: {
-                title: "Coconut Industry",
-                kpis: [
-                    { label: "Q3 2024 Production", value: "136k MT", trend: "Top Crop", icon: "award", status: "up" },
-                    { label: "Halal Ready", value: "45", trend: "Establishments", icon: "check-circle", status: "" },
-                    { label: "Value Addition", value: "Medium", trend: "Strategic Focus", icon: "info", status: "" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [128, 131, 133, 135, 136.5],
-                    label: "Production (Thousand Metric Tons)"
-                },
-                details: [
-                    ["Key Commodities", "Copra, Virgin Coconut Oil, Coconut Sugar"],
-                    ["Investment Focus", "High-value processing, Halal certification"],
-                    ["Target Market", "Global Wellness Market, Halal Export"],
-                    ["Status", "Foremost crop in Western Visayas in 2024"]
-                ]
-            },
-            wearables: {
-                title: "Wearables & Homestyle",
-                kpis: [
-                    { label: "Artisans Supported", value: "1,200+", trend: "Active Base", icon: "users", status: "" },
-                    { label: "Creative Hubs", value: "12", trend: "Regional Hubs", icon: "map-pin", status: "" },
-                    { label: "Fiber Types", value: "4", trend: "High Value", icon: "leaf", status: "up" }
-                ],
-                chart: {
-                    labels: ['2021', '2022', '2023', '2024', '2025(P)'],
-                    data: [45, 52, 68, 75, 85],
-                    label: "Assisted Creative MSMEs"
-                },
-                details: [
-                    ["Key Commodities", "Piña Cloth, Hablon, Bamboo Wearables"],
-                    ["Investment Focus", "Design innovation, digital marketing"],
-                    ["Target Market", "High-end Fashion, Eco-conscious consumers"],
-                    ["Key Event", "Panubli-on Trade Fair"]
-                ]
-            },
-            it_bpm: {
-                title: "IT-BPM Sector",
-                kpis: [
-                    { label: "Estimated Jobs", value: "45k+", trend: "Rapid Expansion", icon: "user-plus", status: "up" },
-                    { label: "Tech Parks", value: "7", trend: "PEZA Centers", icon: "shield-check", status: "" },
-                    { label: "Focus", value: "Next Gen", trend: "AI/Analytics", icon: "cpu", status: "up" }
-                ],
-                chart: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
-                    data: [28, 32, 38, 42, 45],
-                    label: "Direct Employment (Thousands)"
-                },
-                details: [
-                    ["Key Services", "Customer Support, Software Dev, Game Dev"],
-                    ["Investment Focus", "AI optimization, creative tech"],
-                    ["Target Market", "North America, Australia, Global Tech"],
-                    ["Local Hubs", "Iloilo City (Atria Gardens, The Grid)"]
-                ]
-            }
-        };
+        const clusterData = {!! json_encode($clusters->keyBy('slug')->map(function ($c) {
+        return [
+            'title' => $c->title,
+            'kpis' => $c->kpis,
+            'chart' => $c->chart_data,
+            'details' => $c->details
+        ];
+    })) !!};
 
         let mainChart;
 
@@ -327,9 +180,9 @@
             data.details.forEach(row => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                                            <td style="color: var(--accent); font-weight: 600; width: 30%;">${row[0]}</td>
-                                            <td>${row[1]}</td>
-                                        `;
+                                                <td style="color: var(--accent); font-weight: 600; width: 30%;">${row[0]}</td>
+                                                <td>${row[1]}</td>
+                                            `;
                 tableBody.appendChild(tr);
             });
 
@@ -337,9 +190,10 @@
             lucide.createIcons();
         }
 
-        // Initialize with Bamboo
+        // Initialize with first cluster
         document.addEventListener('DOMContentLoaded', () => {
-            updateCluster('bamboo');
+            const firstCluster = '{{ $clusters->first()->slug }}';
+            updateCluster(firstCluster);
         });
     </script>
 @endsection
