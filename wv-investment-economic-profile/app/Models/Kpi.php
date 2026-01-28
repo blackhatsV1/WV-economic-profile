@@ -9,7 +9,7 @@ class Kpi extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['page_id', 'label', 'value', 'trend_value', 'trend_direction', 'icon', 'order'];
+    protected $fillable = ['page_id', 'label', 'value', 'trend_value', 'trend_direction', 'icon', 'order', 'year'];
 
     public function page()
     {

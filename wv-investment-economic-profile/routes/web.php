@@ -28,6 +28,11 @@ Route::prefix('admin-portal-access')->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('/page/{page}', [App\Http\Controllers\AdminController::class, 'editPage'])->name('admin.page.edit');
 
+        // Batch Updates
+        Route::post('/kpi/batch-update', [App\Http\Controllers\AdminController::class, 'batchUpdateKpis'])->name('admin.kpi.batch-update');
+        Route::post('/data-source/batch-update', [App\Http\Controllers\AdminController::class, 'batchUpdateDataSources'])->name('admin.data-source.batch-update');
+        Route::post('/map-marker/batch-update', [App\Http\Controllers\AdminController::class, 'batchUpdateMapMarkers'])->name('admin.map-marker.batch-update');
+
         // KPIs
         Route::post('/page/{page}/kpi', [App\Http\Controllers\AdminController::class, 'storeKpi'])->name('admin.kpi.store');
         Route::post('/kpi/{kpi}', [App\Http\Controllers\AdminController::class, 'updateKpi'])->name('admin.kpi.update');

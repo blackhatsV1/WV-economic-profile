@@ -9,7 +9,7 @@ class MapMarker extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['page_id', 'name', 'lat', 'lng', 'color', 'data', 'type'];
+    protected $fillable = ['page_id', 'name', 'lat', 'lng', 'color', 'data', 'type', 'year'];
 
     public function page()
     {

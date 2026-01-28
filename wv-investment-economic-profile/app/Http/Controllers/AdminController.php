@@ -60,10 +60,19 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('pages', 'clusters'));
     }
 
-    public function editPage(Page $page)
+    public function editPage(Request $request, Page $page)
     {
-        $page->load(['kpis', 'charts', 'mapMarkers', 'dataSources', 'tableData']);
-        return view('admin.edit-page', compact('page'));
+        $year = $request->input('year', 2024);
+
+        $page->load([
+            'kpis' => fn($q) => $q->where('year', $year),
+            'charts' => fn($q) => $q->where('year', $year),
+            'mapMarkers' => fn($q) => $q->where('year', $year),
+            'dataSources' => fn($q) => $q->where('year', $year),
+            'tableData' => fn($q) => $q->where('year', $year)
+        ]);
+
+        return view('admin.edit-page', compact('page', 'year'));
     }
 
     public function updateKpi(Request $request, Kpi $kpi)
@@ -88,6 +97,7 @@ class AdminController extends Controller
             'trend_value' => 'nullable|string',
             'trend_direction' => 'nullable|string',
             'icon' => 'nullable|string',
+            'year' => 'required|integer',
         ]);
 
         $page->kpis()->create($data);
@@ -106,6 +116,7 @@ class AdminController extends Controller
             'title' => 'required|string',
             'url' => 'nullable|url',
             'description' => 'nullable|string',
+            'year' => 'required|integer',
         ]);
 
         $page->dataSources()->create($data);
@@ -139,6 +150,7 @@ class AdminController extends Controller
             'color' => 'nullable|string',
             'type' => 'nullable|string',
             'data' => 'nullable|string',
+            'year' => 'required|integer',
         ]);
 
         $page->mapMarkers()->create($data);
@@ -158,6 +170,7 @@ class AdminController extends Controller
             'description' => 'nullable|string',
             'icon' => 'nullable|string',
             'color' => 'nullable|string',
+            'year' => 'required|integer',
         ]);
 
         $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
@@ -170,5 +183,61 @@ class AdminController extends Controller
     {
         $cluster->delete();
         return back()->with('success', 'Industry Cluster removed successfully.');
+    }
+    public function batchUpdateKpis(Request $request)
+    {
+        $data = $request->validate([
+            'kpis' => 'array',
+            'kpis.*.id' => 'required|exists:kpis,id',
+            'kpis.*.label' => 'required|string',
+            'kpis.*.value' => 'required|string',
+            'kpis.*.trend_value' => 'nullable|string',
+            'kpis.*.trend_direction' => 'nullable|string',
+            'kpis.*.year' => 'required|integer',
+        ]);
+
+        foreach ($data['kpis'] ?? [] as $kpiData) {
+            Kpi::where('id', $kpiData['id'])->update($kpiData);
+        }
+
+        return back()->with('success', 'KPIs updated successfully.');
+    }
+
+    public function batchUpdateDataSources(Request $request)
+    {
+        $data = $request->validate([
+            'sources' => 'array',
+            'sources.*.id' => 'required|exists:data_sources,id',
+            'sources.*.title' => 'required|string',
+            'sources.*.url' => 'nullable|url',
+            'sources.*.description' => 'nullable|string',
+            'sources.*.year' => 'required|integer',
+        ]);
+
+        foreach ($data['sources'] ?? [] as $sourceData) {
+            DataSource::where('id', $sourceData['id'])->update($sourceData);
+        }
+
+        return back()->with('success', 'Data Sources updated successfully.');
+    }
+
+    public function batchUpdateMapMarkers(Request $request)
+    {
+        $data = $request->validate([
+            'markers' => 'array',
+            'markers.*.id' => 'required|exists:map_markers,id',
+            'markers.*.name' => 'required|string',
+            'markers.*.lat' => 'required|numeric',
+            'markers.*.lng' => 'required|numeric',
+            'markers.*.color' => 'nullable|string',
+            'markers.*.type' => 'nullable|string',
+            'markers.*.year' => 'required|integer',
+        ]);
+
+        foreach ($data['markers'] ?? [] as $markerData) {
+            MapMarker::where('id', $markerData['id'])->update($markerData);
+        }
+
+        return back()->with('success', 'Map Markers updated successfully.');
     }
 }

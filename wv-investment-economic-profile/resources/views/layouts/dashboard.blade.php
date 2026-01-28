@@ -74,6 +74,16 @@
                     <h1>@yield('page-title')</h1>
                 </div>
                 <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
+                    <form method="GET" action="{{ url()->current() }}"
+                        style="display: flex; align-items: center; gap: 8px;">
+                        <select name="year" onchange="this.form.submit()"
+                            style="background: rgba(255, 255, 255, 0.05); color: var(--text-primary); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; outline: none; cursor: pointer; font-family: 'Outfit', sans-serif;">
+                            @foreach(range(date('Y') + 1, 2020) as $y)
+                                <option value="{{ $y }}" {{ request('year', 2024) == $y ? 'selected' : '' }}
+                                    style="background: #1e293b;">{{ $y }}</option>
+                            @endforeach
+                        </select>
+                    </form>
                     <span class="date">{{ now()->format('F d, Y') }}</span>
                     <img src="/dti-logo.png" alt="DTI Logo"
                         style="height: 45px; width: auto; background: white; border-radius: 6px; padding: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">

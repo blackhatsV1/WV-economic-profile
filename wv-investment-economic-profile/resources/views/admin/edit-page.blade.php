@@ -5,10 +5,22 @@
 
 @section('content')
     <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
-        <a href="{{ route('admin.dashboard') }}"
-            style="color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px;">
-            <i data-lucide="arrow-left" style="width: 18px;"></i> Back to Dashboard
-        </a>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <a href="{{ route('admin.dashboard') }}"
+                style="color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+                <i data-lucide="arrow-left" style="width: 18px;"></i> Back to Dashboard
+            </a>
+            <form method="GET" action="{{ route('admin.page.edit', $page->id) }}"
+                style="display: flex; align-items: center; gap: 8px;">
+                <label style="color: var(--text-secondary); font-size: 0.875rem;">Year:</label>
+                <select name="year" onchange="this.form.submit()"
+                    style="background: var(--bg-dark); color: var(--text-primary); border: 1px solid var(--border); padding: 4px 8px; border-radius: 4px;">
+                    @foreach(range(date('Y') + 1, 2020) as $y)
+                        <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>{{ $y }}</option>
+                    @endforeach
+                </select>
+            </form>
+        </div>
         <span style="font-size: 0.875rem; color: var(--text-secondary);">Last updated:
             {{ $page->updated_at->format('M d, Y H:i') }}</span>
     </div>
@@ -16,58 +28,67 @@
     <!-- KPI Management -->
     <div class="visual-container full-width">
         <div class="visual-header">
-            <h3>📈 Content KPIs</h3>
+            <h3>📈 Content KPIs ({{ $year }})</h3>
             <button onclick="document.getElementById('add-kpi-modal').style.display='flex'"
                 style="background: var(--accent); color: white; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">+
                 Add New KPI</button>
         </div>
         <div style="padding: 1.5rem;">
-            <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
-                @foreach($page->kpis as $kpi)
-                    <div
-                        style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem;">
-                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: end;">
-                            <form action="{{ route('admin.kpi.update', $kpi->id) }}" method="POST" style="flex: 1;">
-                                @csrf
-                                <div
-                                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; align-items: end;">
-                                    <div>
-                                        <label
-                                            style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Label</label>
-                                        <input type="text" name="label" value="{{ $kpi->label }}"
-                                            style="width: 100%; background: var(--bg-dark); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 6px;">
-                                    </div>
-                                    <div>
-                                        <label
-                                            style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Value</label>
-                                        <input type="text" name="value" value="{{ $kpi->value }}"
-                                            style="width: 100%; background: var(--bg-dark); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 6px;">
-                                    </div>
-                                    <div>
-                                        <label
-                                            style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Trend
-                                            Text</label>
-                                        <input type="text" name="trend_value" value="{{ $kpi->trend_value }}"
-                                            style="width: 100%; background: var(--bg-dark); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 6px;">
-                                    </div>
-                                    <button type="submit"
-                                        style="background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">Save</button>
-                                </div>
-                            </form>
-                            <form action="{{ route('admin.kpi.destroy', $kpi->id) }}" method="POST"
-                                onsubmit="return confirm('Remove this KPI?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                    style="background: rgba(248, 113, 113, 0.1); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.2); padding: 8px; border-radius: 6px; cursor: pointer;">
-                                    <i data-lucide="trash-2" style="width: 16px;"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+            <form action="{{ route('admin.kpi.batch-update') }}" method="POST">
+                @csrf
+                <input type="hidden" name="year" value="{{ $year }}">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr
+                            style="text-align: left; color: var(--text-secondary); font-size: 0.75rem; border-bottom: 1px solid var(--border);">
+                            <th style="padding: 8px;">Label</th>
+                            <th style="padding: 8px;">Value</th>
+                            <th style="padding: 8px;">Trend Text</th>
+                            <th style="padding: 8px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($page->kpis as $index => $kpi)
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <td style="padding: 8px;">
+                                    <input type="hidden" name="kpis[{{ $index }}][id]" value="{{ $kpi->id }}">
+                                    <input type="hidden" name="kpis[{{ $index }}][year]" value="{{ $year }}">
+                                    <input type="text" name="kpis[{{ $index }}][label]" value="{{ $kpi->label }}"
+                                        style="width: 100%; background: transparent; border: none; color: var(--text-primary); padding: 4px;">
+                                </td>
+                                <td style="padding: 8px;">
+                                    <input type="text" name="kpis[{{ $index }}][value]" value="{{ $kpi->value }}"
+                                        style="width: 100%; background: transparent; border: none; color: var(--text-primary); padding: 4px;">
+                                </td>
+                                <td style="padding: 8px;">
+                                    <input type="text" name="kpis[{{ $index }}][trend_value]" value="{{ $kpi->trend_value }}"
+                                        style="width: 100%; background: transparent; border: none; color: var(--text-primary); padding: 4px;">
+                                </td>
+                                <td style="padding: 8px;">
+                                    <button type="button"
+                                        onclick="if(confirm('Delete?')) document.getElementById('delete-kpi-{{ $kpi->id }}').submit()"
+                                        style="color: #f87171; background: none; border: none; cursor: pointer;"><i
+                                            data-lucide="trash-2" style="width: 14px;"></i></button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div style="margin-top: 1rem; text-align: right;">
+                    <button type="submit"
+                        style="background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">Save
+                        All Changes</button>
+                </div>
+            </form>
+            @foreach($page->kpis as $kpi)
+                <form id="delete-kpi-{{ $kpi->id }}" action="{{ route('admin.kpi.destroy', $kpi->id) }}" method="POST"
+                    style="display: none;">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            @endforeach
         </div>
+    </div>
     </div>
 
     @if($page->tableData->count() > 0)
@@ -95,32 +116,57 @@
     @if($page->slug == 'infrastructure' || $page->slug == 'regional-overview')
         <div class="visual-container full-width" style="margin-top: 2rem;">
             <div class="visual-header">
-                <h3>📍 Map Markers</h3>
-                <button onclick="document.getElementById('add-marker-modal').style.display='flex'"
-                    style="background: var(--accent); color: white; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">+
-                    Add Marker</button>
+                <h3>📍 Map Markers ({{ $year }})</h3>
+                <button onclick="document.getElementById('add-marker-modal').style.display='flex'" style="background: var(--accent); color: white; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">+ Add Marker</button>
             </div>
             <div style="padding: 1.5rem;">
-                <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
-                    @foreach($page->mapMarkers as $marker)
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border);">
-                            <div>
-                                <div style="font-weight: 600; color: var(--text-primary);">{{ $marker->name }} <span
-                                        style="font-size: 0.75rem; color: var(--text-secondary);">({{ $marker->type }})</span></div>
-                                <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ $marker->lat }},
-                                    {{ $marker->lng }}</div>
-                            </div>
-                            <form action="{{ route('admin.map-marker.destroy', $marker->id) }}" method="POST"
-                                onsubmit="return confirm('Remove this marker?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" style="background: none; border: none; color: #f87171; cursor: pointer;"><i
-                                        data-lucide="trash-2" style="width: 18px;"></i></button>
-                            </form>
-                        </div>
-                    @endforeach
-                </div>
+                <form action="{{ route('admin.map-marker.batch-update') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="year" value="{{ $year }}">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="text-align: left; color: var(--text-secondary); font-size: 0.75rem; border-bottom: 1px solid var(--border);">
+                                <th style="padding: 8px;">Name</th>
+                                <th style="padding: 8px;">Lat</th>
+                                <th style="padding: 8px;">Lng</th>
+                                <th style="padding: 8px;">Type</th>
+                                <th style="padding: 8px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($page->mapMarkers as $index => $marker)
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <td style="padding: 8px;">
+                                        <input type="hidden" name="markers[{{ $index }}][id]" value="{{ $marker->id }}">
+                                        <input type="hidden" name="markers[{{ $index }}][year]" value="{{ $year }}">
+                                        <input type="text" name="markers[{{ $index }}][name]" value="{{ $marker->name }}" style="width: 100%; background: transparent; border: none; color: var(--text-primary); padding: 4px;">
+                                    </td>
+                                    <td style="padding: 8px;">
+                                        <input type="number" step="any" name="markers[{{ $index }}][lat]" value="{{ $marker->lat }}" style="width: 80px; background: transparent; border: none; color: var(--text-primary); padding: 4px;">
+                                    </td>
+                                    <td style="padding: 8px;">
+                                        <input type="number" step="any" name="markers[{{ $index }}][lng]" value="{{ $marker->lng }}" style="width: 80px; background: transparent; border: none; color: var(--text-primary); padding: 4px;">
+                                    </td>
+                                    <td style="padding: 8px;">
+                                        <input type="text" name="markers[{{ $index }}][type]" value="{{ $marker->type }}" style="width: 100%; background: transparent; border: none; color: var(--text-primary); padding: 4px;">
+                                    </td>
+                                    <td style="padding: 8px;">
+                                        <button type="button" onclick="if(confirm('Delete?')) document.getElementById('delete-marker-{{ $marker->id }}').submit()" style="color: #f87171; background: none; border: none; cursor: pointer;"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 1rem; text-align: right;">
+                        <button type="submit" style="background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">Save All Markers</button>
+                    </div>
+                </form>
+                @foreach($page->mapMarkers as $marker)
+                    <form id="delete-marker-{{ $marker->id }}" action="{{ route('admin.map-marker.destroy', $marker->id) }}" method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                @endforeach
             </div>
         </div>
     @endif
@@ -128,51 +174,49 @@
     <!-- Data Sources Management -->
     <div class="visual-container full-width" style="margin-top: 2rem;">
         <div class="visual-header">
-            <h3>🔗 Data Sources</h3>
-            <button onclick="document.getElementById('add-source-modal').style.display='flex'"
-                style="background: var(--accent); color: white; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">+
-                Add Source</button>
+            <h3>🔗 Data Sources ({{ $year }})</h3>
+            <button onclick="document.getElementById('add-source-modal').style.display='flex'" style="background: var(--accent); color: white; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">+ Add Source</button>
         </div>
         <div style="padding: 1.5rem;">
-            <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
-                @foreach($page->dataSources as $source)
-                    <div
-                        style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem;">
-                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: end;">
-                            <form action="{{ route('admin.data-source.update', $source->id) }}" method="POST" style="flex: 1;">
-                                @csrf
-                                <div
-                                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end;">
-                                    <div>
-                                        <label
-                                            style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Title</label>
-                                        <input type="text" name="title" value="{{ $source->title }}"
-                                            style="width: 100%; background: var(--bg-dark); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 6px;">
-                                    </div>
-                                    <div>
-                                        <label
-                                            style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem;">URL</label>
-                                        <input type="text" name="url" value="{{ $source->url }}"
-                                            style="width: 100%; background: var(--bg-dark); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 6px;">
-                                    </div>
-                                    <button type="submit"
-                                        style="background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">Update
-                                        Source</button>
-                                </div>
-                            </form>
-                            <form action="{{ route('admin.data-source.destroy', $source->id) }}" method="POST"
-                                onsubmit="return confirm('Remove this source?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                    style="background: rgba(248, 113, 113, 0.1); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.2); padding: 8px; border-radius: 6px; cursor: pointer;">
-                                    <i data-lucide="trash-2" style="width: 16px;"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+            <form action="{{ route('admin.data-source.batch-update') }}" method="POST">
+                @csrf
+                <input type="hidden" name="year" value="{{ $year }}">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; color: var(--text-secondary); font-size: 0.75rem; border-bottom: 1px solid var(--border);">
+                            <th style="padding: 8px;">Title</th>
+                            <th style="padding: 8px;">URL</th>
+                            <th style="padding: 8px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($page->dataSources as $index => $source)
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <td style="padding: 8px;">
+                                    <input type="hidden" name="sources[{{ $index }}][id]" value="{{ $source->id }}">
+                                    <input type="hidden" name="sources[{{ $index }}][year]" value="{{ $year }}">
+                                    <input type="text" name="sources[{{ $index }}][title]" value="{{ $source->title }}" style="width: 100%; background: transparent; border: none; color: var(--text-primary); padding: 4px;">
+                                </td>
+                                <td style="padding: 8px;">
+                                    <input type="text" name="sources[{{ $index }}][url]" value="{{ $source->url }}" style="width: 100%; background: transparent; border: none; color: var(--text-primary); padding: 4px;">
+                                </td>
+                                <td style="padding: 8px;">
+                                    <button type="button" onclick="if(confirm('Delete?')) document.getElementById('delete-source-{{ $source->id }}').submit()" style="color: #f87171; background: none; border: none; cursor: pointer;"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div style="margin-top: 1rem; text-align: right;">
+                    <button type="submit" style="background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">Save All Sources</button>
+                </div>
+            </form>
+            @foreach($page->dataSources as $source)
+                <form id="delete-source-{{ $source->id }}" action="{{ route('admin.data-source.destroy', $source->id) }}" method="POST" style="display: none;">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            @endforeach
         </div>
     </div>
 

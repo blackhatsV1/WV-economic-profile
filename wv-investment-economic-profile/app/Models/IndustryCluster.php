@@ -9,7 +9,7 @@ class IndustryCluster extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'title', 'kpis', 'chart_data', 'details', 'order'];
+    protected $fillable = ['name', 'slug', 'title', 'kpis', 'chart_data', 'details', 'order', 'year'];
 
     protected $casts = [
         'kpis' => 'array',

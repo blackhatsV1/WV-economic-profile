@@ -9,7 +9,7 @@ class TableData extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['page_id', 'identifier', 'title', 'headers', 'rows', 'footer_note'];
+    protected $fillable = ['page_id', 'identifier', 'title', 'headers', 'rows', 'footer_note', 'year'];
 
     protected $casts = [
         'headers' => 'array',

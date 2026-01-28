@@ -9,7 +9,7 @@ class DataSource extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['page_id', 'title', 'url', 'description', 'order'];
+    protected $fillable = ['page_id', 'title', 'url', 'description', 'order', 'year'];
 
     public function page()
     {

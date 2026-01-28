@@ -9,7 +9,7 @@ class Chart extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['page_id', 'identifier', 'title', 'type', 'labels', 'datasets', 'options', 'order'];
+    protected $fillable = ['page_id', 'identifier', 'title', 'type', 'labels', 'datasets', 'options', 'order', 'year'];
 
     protected $casts = [
         'labels' => 'array',
