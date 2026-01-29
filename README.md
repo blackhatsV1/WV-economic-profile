@@ -162,6 +162,3 @@ Strong supply of graduates in:
 - Mobile-responsive layout
 
 ---
-
-**Author:** Jayrold Tabalina  
-**Date:** January 2026
